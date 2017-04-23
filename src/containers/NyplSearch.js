@@ -20,14 +20,13 @@ class NyplSearch extends React.Component {
       q: "cats",
       result: [],
       details: ['default'],
-      currentUuid: null
+      currentUuid: null,
+      detailsImgUrl: null,
     }
 
   }
 
   search() {
-    const { nyplSearch } = this.props.searchActions
-    return nyplSearch(this.state.q)
     this.setState({result: []})
     $.get('/nypl/search.json', {
       q: this.state.q,
@@ -41,6 +40,20 @@ class NyplSearch extends React.Component {
     this.setState({q: e.target.value})
   }
 
+  openDetails(obj) {
+    $.get('/nypl/details.json', {
+      apiItemDetailURL: obj.apiItemDetailURL,
+      uuid: obj.uuid
+    }, data => {
+      let result = data.nyplAPI.response
+      console.log(data, result)
+      this.setState({
+        details: result,
+        detailsImgUrl: result.root_captures.capture[0].$,
+      })
+    })
+  }
+
   render() {
     return (
       <div>
@@ -48,16 +61,10 @@ class NyplSearch extends React.Component {
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
-              <span>Hello World</span>
+              <span>NYPL Example</span>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav navbar>
-              <NavItem>Время</NavItem>
-              <NavItem>Счетчики</NavItem>
-            </Nav>
-          </Navbar.Collapse>
         </Navbar>
         <Grid>
           <input type="text" value={this.state.q} onChange={::this.updateQuery}/>
@@ -65,11 +72,11 @@ class NyplSearch extends React.Component {
           <div className="row">
             <div className="col-xs-6">
               <ul className="list-group">
-                {this.state.result.map((object, i) => <NyplSearchResultRow obj={object} key={i} details={this.state.details} />)}
+                {this.state.result.map((object, i) => <NyplSearchResultRow obj={object} key={i} openDetails={::this.openDetails} />)}
               </ul>
             </div>
             <div className="col-xs-6">
-              <NyplSearchDetails details={this.state.details} currentUuid={this.state.currentUuid} />
+              <NyplSearchDetails details={this.state.details} imgUrl={this.state.detailsImgUrl} currentUuid={this.state.currentUuid} />
             </div>
           </div>
         </Grid>

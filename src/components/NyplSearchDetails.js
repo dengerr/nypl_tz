@@ -11,7 +11,11 @@ class NyplSearchDetails extends React.Component {
 
   render(){
     return (
-      <p>{this.props.currentUuid}</p>
+      <div>
+        <p>test</p>
+        <p>{this.props.currentUuid}</p>
+        <p>{this.props.imgUrl}</p>
+      </div>
     )
   }
 }

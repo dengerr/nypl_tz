@@ -9,6 +9,8 @@ class NyplSearchResultRow extends React.Component {
   }
 
   openDetails() {
+    this.props.openDetails(this.props.obj)
+    return
     console.log(this.props)
     $.get('/nypl/search.json', {
       uuid: this.state.uuid

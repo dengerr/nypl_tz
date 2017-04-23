@@ -45,9 +45,15 @@ app.get("/nypl/search.json", function (req, res) {
 
 app.get("/nypl/details.json", function (req, res) {
   var urlParsed = url.parse(req.url, true)
+  var path
+  if (urlParsed.query.apiItemDetailURL) {
+    path = urlParsed.query.apiItemDetailURL.slice(urlParsed.query.apiItemDetailURL.indexOf('/api/'))
+  } else {
+    path = '/api/v1/items/' + urlParsed.query.uuid
+  }
   http.get({
     'host': 'api.repo.nypl.org',
-    'path': '/api/v1/mods/' + urlParsed.query.uuid,
+    'path': path,
     'headers': {
       'Authorization': 'Token token="qqcvhrm19752modk"'
     }
