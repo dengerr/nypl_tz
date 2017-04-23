@@ -21,7 +21,7 @@ class NyplSearch extends React.Component {
       result: [],
       details: ['default'],
       currentUuid: null,
-      detailsImgUrl: null,
+      imgUrl: null,
     }
 
   }
@@ -49,7 +49,7 @@ class NyplSearch extends React.Component {
       console.log(data, result)
       this.setState({
         details: result,
-        detailsImgUrl: result.root_captures.capture[0].$,
+        imgUrl: result.root_captures.capture[0].itemLink.$,
       })
     })
   }
@@ -76,7 +76,7 @@ class NyplSearch extends React.Component {
               </ul>
             </div>
             <div className="col-xs-6">
-              <NyplSearchDetails details={this.state.details} imgUrl={this.state.detailsImgUrl} currentUuid={this.state.currentUuid} />
+              <p>{this.state.imgUrl}</p>
             </div>
           </div>
         </Grid>
